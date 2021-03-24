@@ -15,7 +15,6 @@
     <span class="footer__item">
       <div class="iconfont">&#xe621;</div>
       <div class="footer__title">我的</div>
-      <div class="footer__title">我的测试</div>
     </span>
   </div>
   <router-view/>

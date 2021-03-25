@@ -1,5 +1,5 @@
 <template>
-  <Login />
+  <Login/>
   <div class="footer">
     <span class="footer__item footer__item--active">
       <div class="iconfont">&#xe658;</div>

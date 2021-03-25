@@ -2,10 +2,10 @@
   <div class="wrapper">
     <img class="wrapper__img" src="http://www.dell-lee.com/imgs/vue3/user.png"/>
     <div class="wrapper__input">
-      <input class="wrapper__input__content" placeholder="请输入手机号"/>
+      <input class="wrapper__input__content" v-model="username" placeholder="请输入手机号"/>
     </div>
     <div class="wrapper__input">
-      <input type="password" class="wrapper__input__content" placeholder="请输入密码"/>
+      <input type="password" class="wrapper__input__content" v-model="password" placeholder="请输入密码"/>
     </div>
     <div class="wrapper__login-button" @click="handleClick">登录</div>
     <div class="wrapper__login-link" @click="handleClickToRegister">立即注册</div>
@@ -14,10 +14,24 @@
 
 <script>
 import { useRouter } from 'vue-router'
+import axios from 'axios'
+import { reactive } from 'vue'
 
 export default {
   name: 'Login',
-  setup () {
+  setup: function () {
+    const data = reactive({
+      username: '',
+      password: ''
+    })
+    axios.pos('api/user/login', {
+      username: data.username,
+      password: data.password
+    }).then(function (response) {
+      console.log('成功了')
+    }).catch(function (response) {
+      console.log('失败了')
+    })
     const router = useRouter()
     const handleClick = () => {
       localStorage.isLogin = true

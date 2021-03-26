@@ -24,18 +24,23 @@ export default {
       username: '',
       password: ''
     })
-    axios.pos('api/user/login', {
-      username: data.username,
-      password: data.password
-    }).then(function (response) {
-      console.log('成功了')
-    }).catch(function (response) {
-      console.log('失败了')
-    })
     const router = useRouter()
-    const handleClick = () => {
+    const handleClick = async () => {
+      const resault = await axios.pos('api/user/login', {
+        username: data.username,
+        password: data.password
+      })
+      console.log(resault)
+      // axios.pos('api/user/login', {
+      //   username: data.username,
+      //   password: data.password
+      // }).then(function (response) {
+      //   console.log('成功了')
+      // }).catch(function (response) {
+      //   console.log('失败了')
+      // })
       localStorage.isLogin = true
-      router.push({ name: 'HelloWorld' })
+      router.push({ name: 'Home' })
     }
     const handleClickToRegister = () => {
       router.push({ name: 'Register' })

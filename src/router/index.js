@@ -1,15 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '@/views/login/Login'
-// import App from '@/App'
-import HelloWorld from '@/components/HelloWorld'
-// eslint-disable-next-line no-unused-vars
+import Home from '@/views/home/Home'
 import Register from '@/views/register/Register'
 
 const routes = [
   {
     path: '/',
-    name: 'HelloWorld',
-    component: HelloWorld
+    name: 'Home',
+    component: Home
   },
   {
     path: '/register',
@@ -18,7 +16,7 @@ const routes = [
     beforeEnter (to, from, next) {
       const { isLogin } = localStorage
       // console.log(isLogin)
-      isLogin ? next({ name: 'HelloWorld' }) : next()
+      isLogin ? next({ name: 'Home' }) : next()
     }
 
   },
@@ -29,7 +27,7 @@ const routes = [
     beforeEnter (to, from, next) {
       const { isLogin } = localStorage
       // console.log(isLogin)
-      isLogin ? next({ name: 'HelloWorld' }) : next()
+      isLogin ? next({ name: 'Home' }) : next()
     }
 
   }

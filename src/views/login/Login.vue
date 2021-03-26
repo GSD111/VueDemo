@@ -9,45 +9,92 @@
     </div>
     <div class="wrapper__login-button" @click="handleClick">登录</div>
     <div class="wrapper__login-link" @click="handleClickToRegister">立即注册</div>
+    <Toast v-if="isToast" :message="ToastMsg"/>
   </div>
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-import { reactive } from 'vue'
+import Toast, { ToatsFunction } from '@/components/Toast'
 
+const useLoginEffect = (showToast) => {
+  // const router = useRouter()
+  const data = reactive({
+    username: '',
+    password: ''
+  })
+  const {
+    username,
+    password
+  } = toRefs(data)
+  const handleClick = () => {
+    // console.log(data.username)
+    try {
+      axios.post('https://www.fastmock.site/mock/900f33785105ab98e7a223a9a98703dd/vue3/api/user/login', {
+        username: data.username,
+        password: data.password,
+        changeOrigin: true
+      }).then(function (response) {
+        showToast('登录成功！')
+        console.log('成功了')
+      }).catch(function (response) {
+        showToast('登录失败了！')
+        // alert('失败了')
+        console.log('失败了')
+      })
+    } catch (e) {
+      alert('请求失败')
+    }
+    // localStorage.isLogin = true
+    // router.push({ name: 'Home' })
+  }
+
+  return {
+    handleClick,
+    username,
+    password
+  }
+}
+const useRegisterEffect = () => {
+  const router = useRouter()
+  const handleClickToRegister = () => {
+    router.push({ name: 'Register' })
+  }
+  return { handleClickToRegister }
+}
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+// axios.defaults.withCredentials = true
+// axios.defaults.baseURL = 'http://www.blog.com/api'
 export default {
   name: 'Login',
+  components: { Toast },
   setup: function () {
-    const data = reactive({
-      username: '',
-      password: ''
-    })
-    const router = useRouter()
-    const handleClick = async () => {
-      const resault = await axios.pos('api/user/login', {
-        username: data.username,
-        password: data.password
-      })
-      console.log(resault)
-      // axios.pos('api/user/login', {
-      //   username: data.username,
-      //   password: data.password
-      // }).then(function (response) {
-      //   console.log('成功了')
-      // }).catch(function (response) {
-      //   console.log('失败了')
-      // })
-      localStorage.isLogin = true
-      router.push({ name: 'Home' })
-    }
-    const handleClickToRegister = () => {
-      router.push({ name: 'Register' })
-    }
+    const {
+      isToast,
+      ToastMsg,
+      showToast
+    } = ToatsFunction()
+    const {
+      username,
+      password,
+      handleClick
+    } = useLoginEffect(showToast)
+    const { handleClickToRegister } = useRegisterEffect()
+    // const handleClick = async () => {
+    //   const result = await axios.post('http://www.blog.com/api/demo', {
+    //     username: data.username,
+    //     password: data.password
+    //   })
+    //   console.log(result)
     return {
       handleClick,
-      handleClickToRegister
+      handleClickToRegister,
+      username,
+      password,
+      isToast,
+      ToastMsg
     }
   }
 }

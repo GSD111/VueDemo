@@ -20,7 +20,7 @@ import axios from 'axios'
 import Toast, { ToatsFunction } from '@/components/Toast'
 
 const useLoginEffect = (showToast) => {
-  const router = useRouter()
+  // const router = useRouter()
   const data = reactive({
     username: '',
     password: ''
@@ -31,6 +31,12 @@ const useLoginEffect = (showToast) => {
   } = toRefs(data)
   const handleClick = () => {
     // console.log(data.username)
+    // eslint-disable-next-line eqeqeq
+    if (data.username == '' && data.password == '') {
+      // eslint-disable-next-line no-unreachable
+      showToast('账号密码不能为空！')
+      return false
+    }
     try {
       axios.post('https://www.fastmock.site/mock/900f33785105ab98e7a223a9a98703dd/vue3/api/user/login', {
         username: data.username,
@@ -38,8 +44,8 @@ const useLoginEffect = (showToast) => {
         changeOrigin: true
       }).then(function (response) {
         showToast('登录成功！')
-        localStorage.isLogin = true
-        router.push({ name: 'Home' })
+        // localStorage.isLogin = true
+        // router.push({ name: 'Home' })
         // console.log('成功了')
       }).catch(function (response) {
         showToast('登录失败了！')

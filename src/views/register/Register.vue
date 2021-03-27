@@ -2,31 +2,105 @@
   <div class="wrapper">
     <img class="wrapper__img" src="http://www.dell-lee.com/imgs/vue3/user.png"/>
     <div class="wrapper__input">
-      <input class="wrapper__input__content" placeholder="请输入手机号"/>
+      <input class="wrapper__input__content" v-model="username" placeholder="请输入用户名"/>
     </div>
     <div class="wrapper__input">
-      <input type="password" class="wrapper__input__content" placeholder="请输入密码"/>
+      <input type="password" class="wrapper__input__content" v-model="password" placeholder="请输入密码"/>
     </div>
     <div class="wrapper__input">
-      <input type="password" class="wrapper__input__content" placeholder="确认密码"/>
+      <input type="password" class="wrapper__input__content" v-model="repassword" placeholder="确认密码"/>
     </div>
-    <div class="wrapper__login-button">注册</div>
+    <div class="wrapper__login-button" @click="handleRegisterClick">注册</div>
     <div class="wrapper__login-link" @click="handleClickTo">已有账号去登陆</div>
+    <Toast v-if="isToast" :message="ToastMsg"/>
   </div>
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
+import Toast, { ToatsFunction } from '@/components/Toast'
 
+const useRegisterEffect = (showToast) => {
+  const router = useRouter()
+  const data = reactive({
+    username: '',
+    password: '',
+    repassword: ''
+  })
+  const {
+    username,
+    password,
+    repassword
+  } = toRefs(data)
+  const handleRegisterClick = () => {
+    // eslint-disable-next-line eqeqeq
+    if (data.username == '' || data.password == '' || data.repassword == '') {
+      // eslint-disable-next-line no-unreachable
+      showToast('信息不能为空！')
+      return false
+    }
+    if (data.password !== data.repassword) {
+      showToast('两次密码不一致')
+      return false
+    }
+    try {
+      axios.post('https://www.fastmock.site/mock/900f33785105ab98e7a223a9a98703dd/vue3/api/user/login', {
+        username: data.username,
+        password: data.password,
+        repassword: data.repassword,
+        changeOrigin: true
+      }).then((response) => {
+        showToast('注册成功！')
+        console.log(response)
+        router.push({ name: 'Login' })
+        // console.log('成功了')
+      }).catch(function (response) {
+        showToast('注册失败了！')
+        // alert('失败了')
+        // console.log('失败了')
+      })
+    } catch (e) {
+      alert('请求失败')
+    }
+  }
+  return {
+    handleRegisterClick,
+    username,
+    password,
+    repassword
+  }
+}
 export default {
   name: 'Register',
+  components: { Toast },
   setup () {
+    const {
+      isToast,
+      ToastMsg,
+      showToast
+    } = ToatsFunction()
     const router = useRouter()
+    const {
+      handleRegisterClick,
+      username,
+      password,
+      repassword
+    } = useRegisterEffect(showToast)
     const handleClickTo = () => {
       router.push({ name: 'Login' })
     }
 
-    return { handleClickTo }
+    return {
+      handleClickTo,
+      handleRegisterClick,
+      username,
+      password,
+      repassword,
+      isToast,
+      ToastMsg
+    }
   }
 }
 </script>

@@ -32,7 +32,7 @@ const useLoginEffect = (showToast) => {
   const handleClick = () => {
     // console.log(data.username)
     // eslint-disable-next-line eqeqeq
-    if (data.username == '' && data.password == '') {
+    if (data.username == '' || data.password == '') {
       // eslint-disable-next-line no-unreachable
       showToast('账号密码不能为空！')
       return false

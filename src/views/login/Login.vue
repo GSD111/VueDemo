@@ -20,7 +20,7 @@ import axios from 'axios'
 import Toast, { ToatsFunction } from '@/components/Toast'
 
 const useLoginEffect = (showToast) => {
-  // const router = useRouter()
+  const router = useRouter()
   const data = reactive({
     username: '',
     password: ''
@@ -44,8 +44,8 @@ const useLoginEffect = (showToast) => {
         changeOrigin: true
       }).then(function (response) {
         showToast('登录成功！')
-        // localStorage.isLogin = true
-        // router.push({ name: 'Home' })
+        localStorage.isLogin = true
+        router.push({ name: 'Home' })
         // console.log('成功了')
       }).catch(function (response) {
         showToast('登录失败了！')

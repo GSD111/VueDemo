@@ -107,6 +107,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../style/viriables.scss";
 .wrapper {
   position: absolute;
   left: 0;
@@ -137,10 +138,10 @@ export default {
       outline: none;
       background: none;
       font-size: .16rem;
-      color: #777;
+      color: $register-color;
 
       &::placeholder {
-        color: #777;
+        color: $register-color;
       }
     }
   }
@@ -148,17 +149,17 @@ export default {
   &__login-button {
     margin: .32rem .4rem .16rem .4rem;
     line-height: .48rem;
-    background-color: #0091FF;
+    background-color: $btnColor;
     box-shadow: 0 .04rem .08rem 0 rgba(0, 145, 255, 0.32);
     border-radius: .04rem;
-    color: #fff;
+    color: $bgColor;
     font-size: .16rem;
     text-align: center;
   }
 
   &__login-link {
     font-size: .14rem;
-    color: #777;
+    color: $register-color;
     text-align: center;
   }
 }

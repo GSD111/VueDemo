@@ -8,16 +8,21 @@
       </div>
     </div>
     <ShopInfo :item="item"/>
+    <Content />
   </div>
 </template>
 
 <script>
 import ShopInfo from '@/components/ShopInfo'
 import { useRouter, useRoute } from 'vue-router'
+import Content from '@/views/shop/Content'
 
 export default {
   name: 'Shop',
-  components: { ShopInfo },
+  components: {
+    ShopInfo,
+    Content
+  },
   setup () {
     const router = useRouter()
     const route = useRoute()
@@ -49,13 +54,16 @@ export default {
 .wrapper {
   padding: 0 .18rem;
 }
-.shop{
-  border:none;
+
+.shop {
+  border: none;
 }
+
 .search {
   display: flex;
   padding: .2rem 0 .16rem 0;
   line-height: .32rem;
+
   &__back {
     width: .3rem;
     font-size: .24rem;

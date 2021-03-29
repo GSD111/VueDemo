@@ -8,7 +8,8 @@
       </div>
     </div>
     <ShopInfo :item="item"/>
-    <Content />
+    <Content/>
+    <Cart/>
   </div>
 </template>
 
@@ -16,12 +17,14 @@
 import ShopInfo from '@/components/ShopInfo'
 import { useRouter, useRoute } from 'vue-router'
 import Content from '@/views/shop/Content'
+import Cart from '@/views/shop/Cart'
 
 export default {
   name: 'Shop',
   components: {
     ShopInfo,
-    Content
+    Content,
+    Cart
   },
   setup () {
     const router = useRouter()

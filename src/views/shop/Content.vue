@@ -20,10 +20,12 @@
           </p>
         </div>
         <div class="product__number">
-          <span class="product__number__minus">-</span>
+          <span class="product__number__minus"
+                @click="()=>{ changItemCart(shopId,item.id,item,-1) }"
+          >-</span>
           {{ cartList?.[shopId]?.[item.id]?.count || 0 }}
           <span class="product__number__plus"
-                @click="()=>{ addItemToCart(shopId,item.id,item) }"
+                @click="()=>{ changItemCart(shopId,item.id,item,1) }"
           >+</span>
         </div>
       </div>
@@ -32,26 +34,27 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
+import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
+import { useCommonCartEffect } from './CommonCartEffect'
 
-const useCartEffect = () => {
-  const store = useStore()
-  const { cartList } = toRefs(store.state)
-  const addItemToCart = (shopId, productId, product) => {
-    // console.log(shopId, productId, product)
-    store.commit('addItemToCart', {
-      shopId,
-      productId,
-      product
-    })
-  }
-  return {
-    cartList,
-    addItemToCart
-  }
-}
+// const useCartEffect = () => {
+//   const store = useStore()
+//   const { cartList } = toRefs(store.state)
+//   const changItemCart = (shopId, productId, productInfo, num) => {
+//     // console.log(shopId, productId, productInfo)
+//     store.commit('changItemCart', {
+//       shopId,
+//       productId,
+//       productInfo,
+//       num
+//     })
+//   }
+//   return {
+//     cartList,
+//     changItemCart
+//   }
+// }
 export default {
   name: 'Content',
   setup () {
@@ -92,16 +95,8 @@ export default {
         oldPrice: '66.6'
       }
     ])
-    const {
-      cartList,
-      addItemToCart
-    } = useCartEffect()
-    return {
-      list,
-      cartList,
-      shopId,
-      addItemToCart
-    }
+    const { cartList,changItemCart } = useCommonCartEffect()
+    return { list,cartList, shopId, changItemCart }
   }
 }
 </script>

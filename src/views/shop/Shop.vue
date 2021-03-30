@@ -15,7 +15,7 @@
 
 <script>
 import ShopInfo from '@/components/ShopInfo'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import Content from '@/views/shop/Content'
 import Cart from '@/views/shop/Cart'
 
@@ -28,8 +28,8 @@ export default {
   },
   setup () {
     const router = useRouter()
-    const route = useRoute()
-    console.log(route.name, route.params)
+    // const route = useRoute()
+    // console.log(route.name, route.params)
     const handleBackClick = () => {
       router.back()
     }

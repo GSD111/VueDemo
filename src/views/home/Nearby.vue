@@ -30,7 +30,7 @@ export default {
         desc: 'VIP尊享满99元减30元运费劵(每月3张)'
       },
       {
-        id: 2,
+        id: 3,
         imgUrl: 'http://www.dell-lee.com/imgs/vue3/near.png',
         title: '华润万家',
         tag: ['月售8000+', '起送￥1.5元', '基础运费￥5元'],

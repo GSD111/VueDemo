@@ -25,10 +25,7 @@ const useLoginEffect = (showToast) => {
     username: '',
     password: ''
   })
-  const {
-    username,
-    password
-  } = toRefs(data)
+  const { username, password } = toRefs(data)
   const handleClick = () => {
     // console.log(data.username)
     // eslint-disable-next-line eqeqeq
@@ -57,11 +54,7 @@ const useLoginEffect = (showToast) => {
     }
   }
 
-  return {
-    handleClick,
-    username,
-    password
-  }
+  return { username, password, handleClick }
 }
 const useRegisterEffect = () => {
   const router = useRouter()
@@ -76,17 +69,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 export default {
   name: 'Login',
   components: { Toast },
-  setup: function () {
-    const {
-      isToast,
-      ToastMsg,
-      showToast
-    } = ToatsFunction()
-    const {
-      username,
-      password,
-      handleClick
-    } = useLoginEffect(showToast)
+  setup() {
+    const { isToast, ToastMsg, showToast } = ToatsFunction()
+    const { username, password, handleClick } = useLoginEffect(showToast)
     const { handleClickToRegister } = useRegisterEffect()
     // const handleClick = async () => {
     //   const result = await axios.post('http://www.blog.com/api/demo', {
@@ -94,14 +79,7 @@ export default {
     //     password: data.password
     //   })
     //   console.log(result)
-    return {
-      handleClick,
-      handleClickToRegister,
-      username,
-      password,
-      isToast,
-      ToastMsg
-    }
+    return { username, password, isToast, ToastMsg, handleClick, handleClickToRegister }
   }
 }
 </script>

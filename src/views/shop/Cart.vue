@@ -1,24 +1,23 @@
 <template>
-  <div class="mask" v-if="showCart"></div>
+  <div class="mask" v-if="showCart" @click="handleShowCartChange" />
   <div class="cart">
     <div class="product" v-if="showCart">
       <div class="product__header">
          <div class="product__header__all" @click="() => setCartItemChecked(shopId)">
            <span
              class="product__header__icon iconfont"
-             v-html="allChecked ?'&#xe652;':'&#xe66c;'"
-           ></span>
+             v-html="allChecked ?'&#xe652;':'&#xe667;'"
+           />
            全选
          </div>
-         <div
-           class="product__header__clear"
-           @click="() => clearCartProducts(shopId)"
-         >清空购物车</div>
+         <div class="product__header__clear">
+           <span class="product__header__btn"  @click="() => clearCartProducts(shopId)">清空购物车</span>
+         </div>
       </div>
       <template  v-for="item in CartProductList" :key="item.id">
         <div class="product__item" v-if="item.count > 0">
           <div class="product__item__checked iconfont"
-               v-html="item.check ? '&#xe652;':'&#xe66c;'"
+               v-html="item.check ? '&#xe652;':'&#xe667;'"
                @click="()=>{ handleCartItemChecked(shopId,item.id) }" />
           <img class="product__item__img" :src="item.imgUrl"/>
           <div class="product__item__detail">
@@ -68,7 +67,7 @@ const useCartEffect = (shopId) => {
   const { changItemCart } = useCommonCartEffect()
   const store = useStore()
   const cartList = store.state.cartList
-  //就算购物车中的商品数量
+  //计算购物车中的商品数量
   const total = computed(() => {
     const productList = cartList[shopId]
     let count = 0
@@ -137,17 +136,24 @@ const useCartEffect = (shopId) => {
   return { total, price, CartProductList ,cartList,allChecked,changItemCart ,
     handleCartItemChecked ,clearCartProducts,setCartItemChecked }
 }
+
+//展示隐藏购物车逻辑
+const toggleCartShow = () =>{
+  const showCart = ref(false)
+  const handleShowCartChange = () =>{
+    showCart.value = !showCart.value
+  }
+
+  return {showCart, handleShowCartChange}
+}
 export default {
   name: 'Cart',
   setup () {
     const route = useRoute()
-    const showCart = ref(false)
-    const handleShowCartChange = () =>{
-       showCart.value = !showCart.value
-    }
     const shopId = route.params.id
     const { total, price, CartProductList ,cartList,allChecked,
       changItemCart ,handleCartItemChecked ,clearCartProducts ,setCartItemChecked } = useCartEffect(shopId)
+    const {showCart, handleShowCartChange} = toggleCartShow()
     return { shopId, total, price, CartProductList,cartList,allChecked,showCart,setCartItemChecked,
       changItemCart ,handleCartItemChecked ,clearCartProducts ,handleShowCartChange }
   }
@@ -194,12 +200,16 @@ export default {
     &__icon{
       display: inline-block;
       color:$btnColor;
+      vertical-align: top;
       font-size:.19rem;
     }
     &__clear{
       flex:1;
       margin-right:.16rem;
       text-align: right;
+    }
+    &__btn{
+      display:inline-block;
     }
   }
   &__item {

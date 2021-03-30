@@ -104,7 +104,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../style/mixin.scss';
 @import '../../style/viriables.scss';
-
+@import "../../style/product.scss";
 .content {
   position: absolute;
   display: flex;
@@ -132,87 +132,4 @@ export default {
   }
 }
 
-.product {
-  flex: 1;
-  overflow-y: scroll;
-
-  &__item {
-    position: relative;
-    display: flex;
-    padding: .12rem 0;
-    margin: 0 .16rem;
-    border-bottom: solid .01rem $content-bgColor;
-
-    &__detail {
-      overflow: hidden;
-    }
-
-    &__img {
-      width: .68rem;
-      height: .68rem;
-      margin-right: .16rem;
-    }
-
-    &__title {
-      margin: 0;
-      line-height: .2rem;
-      font-size: .14rem;
-      color: $content-fontcolor;
-      @include ellipsis;
-    }
-
-    &__sales {
-      margin: .06rem 0;
-      font-size: .12rem;
-      color: $content-fontcolor;
-    }
-
-    &__price {
-      margin: 0;
-      line-height: .2rem;
-      color: #e93b3b;
-    }
-
-    &__yen {
-      font-size: .14rem;
-    }
-
-    &__origin {
-      margin-left: .06rem;
-      line-height: .2rem;
-      font-size: .12rem;
-      color: #999;
-      text-decoration: line-through;
-    }
-
-  }
-
-  .product__number {
-    position: absolute;
-    right: 0;
-    bottom: .12rem;
-
-    &__minus, &__plus {
-      display: inline-block;
-      width: .2rem;
-      height: .2rem;
-      line-height: .16rem;
-      border-radius: 50%;
-      font-size: .2rem;
-      text-align: center;
-    }
-
-    &__minus {
-      border: solid .01px $content-btn;
-      color: $content-btn;
-      margin-right: .05rem;
-    }
-
-    &__plus {
-      background: $btnColor;
-      color: $bgColor;
-      margin-left: .05rem;
-    }
-  }
-}
 </style>

@@ -29,11 +29,7 @@ const useRegisterEffect = (showToast) => {
     password: '',
     repassword: ''
   })
-  const {
-    username,
-    password,
-    repassword
-  } = toRefs(data)
+  const { username, password, repassword } = toRefs(data)
   const handleRegisterClick = () => {
     // eslint-disable-next-line eqeqeq
     if (data.username == '' || data.password == '' || data.repassword == '') {
@@ -76,31 +72,14 @@ export default {
   name: 'Register',
   components: { Toast },
   setup () {
-    const {
-      isToast,
-      ToastMsg,
-      showToast
-    } = ToatsFunction()
+    const { isToast, ToastMsg, showToast } = ToatsFunction()
     const router = useRouter()
-    const {
-      handleRegisterClick,
-      username,
-      password,
-      repassword
-    } = useRegisterEffect(showToast)
+    const { username, password, repassword,handleRegisterClick, } = useRegisterEffect(showToast)
     const handleClickTo = () => {
       router.push({ name: 'Login' })
     }
 
-    return {
-      handleClickTo,
-      handleRegisterClick,
-      username,
-      password,
-      repassword,
-      isToast,
-      ToastMsg
-    }
+    return { username, password, repassword, isToast, ToastMsg, handleClickTo, handleRegisterClick }
   }
 }
 </script>

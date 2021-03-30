@@ -43,10 +43,7 @@ export default {
       }
 
     // console.log(item)
-    return {
-      item,
-      handleBackClick
-    }
+    return { item, handleBackClick }
   }
 }
 </script>

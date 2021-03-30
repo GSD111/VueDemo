@@ -50,7 +50,7 @@
         <span class="check__info__price">&yen; {{ price }}</span>
       </div>
       <div class="check__btn">
-        立即结算
+        <router-link :to="{name:'Home'}"> 去结算</router-link>
       </div>
     </div>
   </div>
@@ -342,6 +342,10 @@ export default {
     color: $bgColor;
     text-align: center;
     background: #4fb0f9;
+    a{
+      color:$bgColor;
+      text-decoration: none;
+    }
   }
 }
 

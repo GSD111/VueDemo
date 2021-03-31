@@ -1,5 +1,17 @@
 import { createStore } from 'vuex'
 
+
+//将数据进行本地缓存
+const setLocalCartList = (state) =>{
+  const { cartList } = state
+  const cartListString = JSON.stringify(cartList)
+  localStorage.cartList = cartListString
+}
+
+//获取缓存中的数据
+const getLocalCartList = () =>{
+  return JSON.parse(localStorage.cartList) || { }
+}
 export default createStore({
   state: {
     // shopId 商家id,shopName 商家名 productList 产品信息productId产品id, 数据结构如下：
@@ -14,7 +26,7 @@ export default createStore({
     //     }
     //   }
     // }
-    cartList: {}
+    cartList: getLocalCartList()
   },
 
   //处理购物车传递的数据
@@ -48,6 +60,7 @@ export default createStore({
       }
       shopInfo.productList[productId] = product
       state.cartList[shopId] = shopInfo
+      setLocalCartList(state)
       // console.log(state.cartList)
     },
     //获取商家信息
@@ -62,6 +75,7 @@ export default createStore({
       }
       shopInfo.shopName = shopName
       state.cartList[shopId] = shopInfo
+      setLocalCartList(state)
     },
     //修改购物车中产品选中状态
     changeCartChecked (state, payload) {
@@ -72,6 +86,7 @@ export default createStore({
       // console.log(shopId,productId)
       const productChecked = state.cartList[shopId].productList[productId]
       productChecked.check = !productChecked.check
+      setLocalCartList(state)
     },
     setCartItemChecked (state, payload) {
       const { shopId } = payload
@@ -82,12 +97,14 @@ export default createStore({
           product.check = true
         }
       }
+      setLocalCartList(state)
     },
 
     //清空购物车
     clearCartProducts (state, payload) {
       const { shopId } = payload
       state.cartList[shopId].productList = {}
+      setLocalCartList(state)
     }
   },
   actions: {},

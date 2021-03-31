@@ -1,12 +1,12 @@
 <template>
-  <div class="mask" v-if="showCart && caculations.total > 0" @click="handleShowCartChange" />
+  <div class="mask" v-if="showCart && calculations.total > 0" @click="handleShowCartChange" />
   <div class="cart">
-    <div class="product" v-if="showCart && caculations.total > 0">
+    <div class="product" v-if="showCart && calculations.total > 0">
       <div class="product__header">
          <div class="product__header__all" @click="() => setCartItemChecked(shopId)">
            <span
              class="product__header__icon iconfont"
-             v-html="caculations.allChecked ?'&#xe652;':'&#xe667;'"
+             v-html="calculations.allChecked ?'&#xe652;':'&#xe667;'"
            />
            全选
          </div>
@@ -44,10 +44,10 @@
       <div class="check__icon">
         <img class="check__icon__img" src="http://www.dell-lee.com/imgs/vue3/basket.png"
          @click="handleShowCartChange"/>
-        <div class="check__icon__tag">{{ caculations.total }}</div>
+        <div class="check__icon__tag">{{ calculations.total }}</div>
       </div>
       <div class="check__info">总计：
-        <span class="check__info__price">&yen; {{ caculations.price }}</span>
+        <span class="check__info__price">&yen; {{ calculations.price }}</span>
       </div>
       <div class="check__btn">
         <router-link :to="{name:'Home'}"> 去结算</router-link>
@@ -68,7 +68,7 @@ const useCartEffect = (shopId) => {
   const { cartList,changItemCart } = useCommonCartEffect()
   // const cartList = store.state.cartList
   //计算购物车中的商品数量
-  const caculations = computed(() => {
+  const calculations = computed(() => {
     const productList = cartList[shopId]?.productList
     const result = {total:0,price:0 , allChecked:true}
     if (productList) {
@@ -148,7 +148,7 @@ const useCartEffect = (shopId) => {
     return cartList?.[shopId]?.productList?.[productId].count || 0
   }
 
-  return { CartProductList ,cartList,caculations,changItemCart ,getProductCartInfo,
+  return { CartProductList ,cartList,calculations,changItemCart ,getProductCartInfo,
     handleCartItemChecked ,clearCartProducts,setCartItemChecked }
 }
 
@@ -167,10 +167,10 @@ export default {
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { CartProductList ,cartList,caculations,getProductCartInfo,
+    const { CartProductList ,cartList,calculations,getProductCartInfo,
       changItemCart ,handleCartItemChecked ,clearCartProducts ,setCartItemChecked } = useCartEffect(shopId)
     const {showCart, handleShowCartChange} = toggleCartShow()
-    return { shopId, CartProductList,cartList,caculations,showCart,setCartItemChecked,getProductCartInfo,
+    return { shopId, CartProductList,cartList,calculations,showCart,setCartItemChecked,getProductCartInfo,
       changItemCart ,handleCartItemChecked ,clearCartProducts ,handleShowCartChange }
   }
 }

@@ -1,12 +1,12 @@
 <template>
-  <div class="mask" v-if="showCart" @click="handleShowCartChange" />
+  <div class="mask" v-if="showCart && caculations.total > 0" @click="handleShowCartChange" />
   <div class="cart">
-    <div class="product" v-if="showCart">
+    <div class="product" v-if="showCart && caculations.total > 0">
       <div class="product__header">
          <div class="product__header__all" @click="() => setCartItemChecked(shopId)">
            <span
              class="product__header__icon iconfont"
-             v-html="allChecked ?'&#xe652;':'&#xe667;'"
+             v-html="caculations.allChecked ?'&#xe652;':'&#xe667;'"
            />
            全选
          </div>
@@ -31,7 +31,7 @@
             <span class="product__number__minus"
                   @click="()=>{ changItemCart(shopId,item.id,item,-1) }"
             >-</span>
-            {{ cartList?.[shopId]?.[item.id].count || 0 }}
+            {{ getProductCartInfo(shopId,item.id) }}
             <span class="product__number__plus"
                   @click="()=>{ changItemCart(shopId,item.id,item,1) }"
             >+</span>
@@ -44,10 +44,10 @@
       <div class="check__icon">
         <img class="check__icon__img" src="http://www.dell-lee.com/imgs/vue3/basket.png"
          @click="handleShowCartChange"/>
-        <div class="check__icon__tag">{{ total }}</div>
+        <div class="check__icon__tag">{{ caculations.total }}</div>
       </div>
       <div class="check__info">总计：
-        <span class="check__info__price">&yen; {{ price }}</span>
+        <span class="check__info__price">&yen; {{ caculations.price }}</span>
       </div>
       <div class="check__btn">
         <router-link :to="{name:'Home'}"> 去结算</router-link>
@@ -64,60 +64,70 @@ import { useCommonCartEffect } from './CommonCartEffect'
 
 //购物车商品信息、数量、价格获取计算
 const useCartEffect = (shopId) => {
-  const { changItemCart } = useCommonCartEffect()
   const store = useStore()
-  const cartList = store.state.cartList
+  const { cartList,changItemCart } = useCommonCartEffect()
+  // const cartList = store.state.cartList
   //计算购物车中的商品数量
-  const total = computed(() => {
-    const productList = cartList[shopId]
-    let count = 0
-    if (productList) {
-      for (const i in productList) {
-        // console.log(i)
-        // const product = productList[i]
-        // count += product.count
-        // console.log(productList[i])
-        count += productList[i].count
-      }
-    }
-    return count
-  })
-
-  //计算购物车中的产品金额
-  const price = computed(() => {
-    const productList = cartList[shopId]
-    let count = 0
+  const caculations = computed(() => {
+    const productList = cartList[shopId]?.productList
+    const result = {total:0,price:0 , allChecked:true}
     if (productList) {
       for (const i in productList) {
         // console.log(i)
         const product = productList[i]
+        result.total += product.count        //计算商品数量
         if(product.check){
-          count += (product.count * product.price)
+          result.price += (product.count * product.price)   //计算商品价格
         }
-      }
-    }
-    return count.toFixed(2)
-  })
-
-  //商品全选
-  const allChecked = computed(()=>{
-    const productList = cartList[shopId]
-    let result = true
-    if (productList) {
-      for (let i in productList) {
-        // console.log(i)
-        const product = productList[i]
         if(product.count > 0 && !product.check){
-            result = false
+          result.allChecked = false            //商品选中状态
         }
+        // console.log(productList[i])
+        // count += productList[i].count
       }
     }
+    result.price = result.price.toFixed(2)
     return result
   })
 
+  // //计算购物车中的产品金额
+  // const price = computed(() => {
+  //   const productList = cartList[shopId]
+  //   let allChecked = true
+  //   if (productList) {
+  //     for (const i in productList) {
+  //       // console.log(i)
+  //       const product = productList[i]
+  //       if(product.check){
+  //         allChecked += (product.count * product.price)
+  //       }
+  //       if(product.count > 0 && !product.check){
+  //         allChecked = false
+  //       }
+  //     }
+  //   }
+  //   return count.toFixed(2)
+  // })
+  //
+  // //商品全选
+  // const allChecked = computed(()=>{
+  //   const productList = cartList[shopId]
+  //   let result = true
+  //   if (productList) {
+  //     for (let i in productList) {
+  //       // console.log(i)
+  //       const product = productList[i]
+  //       if(product.count > 0 && !product.check){
+  //           result = false
+  //       }
+  //     }
+  //   }
+  //   return result
+  // })
+
   //获取购物车中的产品
   const CartProductList = computed(() => {
-    const CartProductList = cartList[shopId] || []
+    const CartProductList = cartList[shopId]?.productList || []
 
     return CartProductList
   })
@@ -133,7 +143,12 @@ const useCartEffect = (shopId) => {
      store.commit('clearCartProducts',{ shopId })
   }
 
-  return { total, price, CartProductList ,cartList,allChecked,changItemCart ,
+  //商品数量显示
+  const getProductCartInfo = (shopId,productId) =>{
+    return cartList?.[shopId]?.productList?.[productId].count || 0
+  }
+
+  return { CartProductList ,cartList,caculations,changItemCart ,getProductCartInfo,
     handleCartItemChecked ,clearCartProducts,setCartItemChecked }
 }
 
@@ -143,18 +158,19 @@ const toggleCartShow = () =>{
   const handleShowCartChange = () =>{
     showCart.value = !showCart.value
   }
-
   return {showCart, handleShowCartChange}
 }
+
+
 export default {
   name: 'Cart',
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { total, price, CartProductList ,cartList,allChecked,
+    const { CartProductList ,cartList,caculations,getProductCartInfo,
       changItemCart ,handleCartItemChecked ,clearCartProducts ,setCartItemChecked } = useCartEffect(shopId)
     const {showCart, handleShowCartChange} = toggleCartShow()
-    return { shopId, total, price, CartProductList,cartList,allChecked,showCart,setCartItemChecked,
+    return { shopId, CartProductList,cartList,caculations,showCart,setCartItemChecked,getProductCartInfo,
       changItemCart ,handleCartItemChecked ,clearCartProducts ,handleShowCartChange }
   }
 }

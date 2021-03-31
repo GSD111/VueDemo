@@ -2,11 +2,12 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    // shopId 商家id,productId产品id,productInfo 产品信息 数据结构如下：
+    // shopId 商家id,shopName 商家名 productList 产品信息productId产品id, 数据结构如下：
     // carlist:{
     //   shopId:{
+    //    shopName:'沃尔玛'
+    //    productList:{
     //     productId:{
-    //       productInfo:{
     //         id:1,
     //         name:'tomato'
     //       }
@@ -26,48 +27,67 @@ export default createStore({
         productInfo
       } = payload
       // console.log(shopId, productId, productInfo)
-      let shopInfo = state.cartList[shopId]
-      if (!shopInfo) {
-        shopInfo = {}
+      let shopInfo = state.cartList[shopId] || {
+        shopName: '',
+        productList: {}
       }
-      let product = shopInfo[productId]
+      // if (!shopInfo) {
+      //   shopInfo = {}
+      // }
+      let product = shopInfo.productList[productId]
       if (!product) {
         product = productInfo
         product.count = 0
       }
       product.count = product.count + payload.num
-      if(payload.num > 0){
+      if (payload.num > 0) {
         product.check = true
       }
       if (product.count < 0) {
         product.count = 0
       }
-      shopInfo[productId] = product
+      shopInfo.productList[productId] = product
+      state.cartList[shopId] = shopInfo
+      // console.log(state.cartList)
+    },
+    //获取商家信息
+    changeShopName (state, payload) {
+      const {
+        shopId,
+        shopName
+      } = payload
+      const shopInfo = state.cartList[shopId] || {
+        shopName: '',
+        productList: {}
+      }
+      shopInfo.shopName = shopName
       state.cartList[shopId] = shopInfo
     },
-
     //修改购物车中产品选中状态
-    changeCartChecked(state,payload){
-      const { shopId,productId } = payload
+    changeCartChecked (state, payload) {
+      const {
+        shopId,
+        productId
+      } = payload
       // console.log(shopId,productId)
-      const productChecked = state.cartList[shopId][productId]
+      const productChecked = state.cartList[shopId].productList[productId]
       productChecked.check = !productChecked.check
     },
-    setCartItemChecked(state,payload){
+    setCartItemChecked (state, payload) {
       const { shopId } = payload
-      const products = state.cartList[shopId]
-      if(products){
-         for(let key in products){
-           const product = products[key]
-           product.check = true
-         }
+      const products = state.cartList[shopId].productList
+      if (products) {
+        for (let key in products) {
+          const product = products[key]
+          product.check = true
+        }
       }
     },
 
     //清空购物车
-    clearCartProducts(state,payload){
+    clearCartProducts (state, payload) {
       const { shopId } = payload
-      state.cartList[shopId] = { }
+      state.cartList[shopId].productList = {}
     }
   },
   actions: {},

@@ -21,11 +21,11 @@
         </div>
         <div class="product__number">
           <span class="product__number__minus"
-                @click="()=>{ changItemCart(shopId,item.id,item,-1) }"
+                @click="()=>{ changeItem(shopId,item.id,item,-1,shopName) }"
           >-</span>
-          {{ cartList?.[shopId]?.[item.id]?.count || 0 }}
+          {{ cartList?.[shopId]?.productList?.[item.id]?.count || 0 }}
           <span class="product__number__plus"
-                @click="()=>{ changItemCart(shopId,item.id,item,1) }"
+                @click="()=>{ changeItem(shopId,item.id,item,1,shopName) }"
           >+</span>
         </div>
       </div>
@@ -36,31 +36,33 @@
 <script>
 import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import { useCommonCartEffect } from './CommonCartEffect'
 
-// const useCartEffect = () => {
-//   const store = useStore()
-//   const { cartList } = toRefs(store.state)
-//   const changItemCart = (shopId, productId, productInfo, num) => {
-//     // console.log(shopId, productId, productInfo)
-//     store.commit('changItemCart', {
-//       shopId,
-//       productId,
-//       productInfo,
-//       num
-//     })
-//   }
-//   return {
-//     cartList,
-//     changItemCart
-//   }
-// }
+
+//购物车相关逻辑
+const useCartEffect = () => {
+  const route = useRoute()
+  const store = useStore()
+  const shopId = route.params.id
+  const { cartList,changItemCart } = useCommonCartEffect()
+  const changeItem = (shopId,productId,item,num,shopName) =>{
+    changItemCart(shopId,productId,item,num)
+    changeShopName(shopId,shopName)
+  }
+  const changeShopName = (shopId,shopName) =>{
+    store.commit('changeShopName',{ shopId,shopName})
+  }
+  return {
+    cartList,
+    shopId,
+    changItemCart,changeItem
+  }
+}
 export default {
   name: 'Content',
+  props:['shopName'],
   setup () {
-    const route = useRoute()
-    const shopId = route.params.id
-    // console.log(route.params.id)
     const list = reactive([
       {
         id: 1,
@@ -95,8 +97,8 @@ export default {
         oldPrice: '66.6'
       }
     ])
-    const { cartList,changItemCart } = useCommonCartEffect()
-    return { list,cartList, shopId, changItemCart }
+    const { cartList,shopId,changeItem} = useCartEffect()
+    return { list,cartList, shopId, changeItem }
   }
 }
 </script>

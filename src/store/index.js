@@ -14,7 +14,7 @@ const getLocalCartList = () =>{
 }
 export default createStore({
   state: {
-    // shopId 商家id,shopName 商家名 productList 产品信息productId产品id, 数据结构如下：
+    // shopId 商家id,shopName 商家名 productList 产品信息列表 productId产品信息, 数据结构如下：
     // carlist:{
     //   shopId:{
     //    shopName:'沃尔玛'

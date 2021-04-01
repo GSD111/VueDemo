@@ -10,7 +10,7 @@ const setLocalCartList = (state) =>{
 
 //获取缓存中的数据
 const getLocalCartList = () =>{
-  return JSON.parse(localStorage.cartList) || { }
+  return JSON.parse(localStorage.cartList) || {}
 }
 export default createStore({
   state: {

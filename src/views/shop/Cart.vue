@@ -50,7 +50,7 @@
         <span class="check__info__price">&yen; {{ calculations.price }}</span>
       </div>
       <div class="check__btn">
-        <router-link :to="{name:'Home'}"> 去结算</router-link>
+        <router-link :to="{ path:`/orderConfirmation/${shopId}` }"> 去结算</router-link>
       </div>
     </div>
   </div>
@@ -65,7 +65,7 @@ import { useCommonCartEffect } from './CommonCartEffect'
 //购物车商品信息、数量、价格获取计算
 const useCartEffect = (shopId) => {
   const store = useStore()
-  const { cartList,changItemCart } = useCommonCartEffect()
+  const { cartList,CartProductList,changItemCart } = useCommonCartEffect(shopId)
   // const cartList = store.state.cartList
   //计算购物车中的商品数量
   const calculations = computed(() => {
@@ -125,12 +125,7 @@ const useCartEffect = (shopId) => {
   //   return result
   // })
 
-  //获取购物车中的产品
-  const CartProductList = computed(() => {
-    const CartProductList = cartList[shopId]?.productList || []
 
-    return CartProductList
-  })
   //修改商品选中状态
   const handleCartItemChecked =(shopId,productId)=>{
       store.commit('changeCartChecked',{ shopId,productId })

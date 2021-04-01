@@ -1,7 +1,7 @@
 import { useStore } from 'vuex'
-import {  toRefs } from 'vue'
+import {computed, toRefs} from 'vue'
 //购车物逻辑
-export const useCommonCartEffect = () => {
+export const useCommonCartEffect = (shopId) => {
   const store = useStore()
   const cartList = store.state.cartList
   // const { cartList } = toRefs(store.state)
@@ -14,5 +14,11 @@ export const useCommonCartEffect = () => {
       num
     })
   }
-  return { cartList,changItemCart }
+  //获取购物车中的产品
+  const CartProductList = computed(() => {
+    const CartProductList = cartList[shopId]?.productList || []
+
+    return CartProductList
+  })
+  return { cartList,changItemCart ,CartProductList}
 }

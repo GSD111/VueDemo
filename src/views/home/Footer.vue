@@ -4,8 +4,10 @@
       v-for="(item,index) in footerList"
       :key="index"
       :class="{'footer__item':true ,'footer__item--active': index==0 }">
-      <div class="iconfont" v-html="item.icon"/>
-      <div class="footer__title">{{ item.text }}</div>
+      <router-link :to="item.to">
+        <div class="iconfont" v-html="item.icon"/>
+        <div class="footer__title">{{ item.text }}</div>
+      </router-link>
     </span>
   </div>
 </template>
@@ -13,27 +15,31 @@
 <script>
 export default {
   name: 'Footer',
-  setup () {
+  setup() {
     const footerList = [
       {
         icon: '&#xe658;',
-        text: '首页'
+        text: '首页',
+        to: {name: 'Home'}
       },
       {
         icon: '&#xe638;',
-        text: '购物车'
+        text: '购物车',
+        to: {name: 'CartList'}
       },
       {
         icon: '&#xe601;',
-        text: '订单'
+        text: '订单',
+        to: {name: 'Home'}
       },
       {
         icon: '&#xe621;',
-        text: '我的'
+        text: '我的',
+        to: {name: 'Home'}
       }
     ]
 
-    return { footerList }
+    return {footerList}
   }
 }
 </script>
@@ -54,14 +60,19 @@ export default {
   &__item {
     flex: 1;
     text-align: center;
-
+    a {
+      color: $content-fontcolor;
+      text-decoration: none;
+    }
     .iconfont {
       margin: 0.07rem 0 0.02rem 0;
       font-size: .2rem;
     }
 
     &--active {
-      color: #1fa4fc;
+      a {
+        color: #1fa4fc;
+      }
     }
   }
 

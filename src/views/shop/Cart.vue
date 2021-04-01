@@ -1,24 +1,24 @@
 <template>
-  <div class="mask" v-if="showCart && calculations.total > 0" @click="handleShowCartChange" />
+  <div class="mask" v-if="showCart && calculations.total > 0" @click="handleShowCartChange"/>
   <div class="cart">
     <div class="product" v-if="showCart && calculations.total > 0">
       <div class="product__header">
-         <div class="product__header__all" @click="() => setCartItemChecked(shopId)">
+        <div class="product__header__all" @click="() => setCartItemChecked(shopId)">
            <span
              class="product__header__icon iconfont"
              v-html="calculations.allChecked ?'&#xe652;':'&#xe667;'"
            />
-           全选
-         </div>
-         <div class="product__header__clear">
-           <span class="product__header__btn"  @click="() => clearCartProducts(shopId)">清空购物车</span>
-         </div>
+          全选
+        </div>
+        <div class="product__header__clear">
+          <span class="product__header__btn" @click="() => clearCartProducts(shopId)">清空购物车</span>
+        </div>
       </div>
-      <template  v-for="item in CartProductList" :key="item.id">
+      <template v-for="item in CartProductList" :key="item.id">
         <div class="product__item" v-if="item.count > 0">
           <div class="product__item__checked iconfont"
                v-html="item.check ? '&#xe652;':'&#xe667;'"
-               @click="()=>{ handleCartItemChecked(shopId,item.id) }" />
+               @click="()=>{ handleCartItemChecked(shopId,item.id) }"/>
           <img class="product__item__img" :src="item.imgUrl"/>
           <div class="product__item__detail">
             <h4 class="product__item__title">{{ item.name }}</h4>
@@ -31,7 +31,7 @@
             <span class="product__number__minus"
                   @click="()=>{ changItemCart(shopId,item.id,item,-1) }"
             >-</span>
-            {{ getProductCartInfo(shopId,item.id) }}
+            {{ getProductCartInfo(shopId, item.id) }}
             <span class="product__number__plus"
                   @click="()=>{ changItemCart(shopId,item.id,item,1) }"
             >+</span>
@@ -43,92 +43,62 @@
     <div class="check">
       <div class="check__icon">
         <img class="check__icon__img" src="http://www.dell-lee.com/imgs/vue3/basket.png"
-         @click="handleShowCartChange"/>
+             @click="handleShowCartChange"/>
         <div class="check__icon__tag">{{ calculations.total }}</div>
       </div>
       <div class="check__info">总计：
         <span class="check__info__price">&yen; {{ calculations.price }}</span>
       </div>
       <div class="check__btn">
-        <router-link :to="{ path:`/orderConfirmation/${shopId}` }"> 去结算</router-link>
+        <template v-if="calculations.total <= 0">
+          去结算
+        </template>
+        <template v-else>
+          <router-link :to="{ path:`/orderConfirmation/${shopId}` }"> 去结算</router-link>
+        </template>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-import { computed ,ref } from 'vue'
-import { useCommonCartEffect } from './CommonCartEffect'
-
+import {useRoute} from 'vue-router'
+import {useStore} from 'vuex'
+import {ref} from 'vue'
+import {useCommonCartEffect} from './CommonCartEffect'
 //购物车商品信息、数量、价格获取计算
 const useCartEffect = (shopId) => {
   const store = useStore()
-  const { cartList,CartProductList,calculations,changItemCart } = useCommonCartEffect(shopId)
+  const {cartList, CartProductList, calculations, changItemCart} = useCommonCartEffect(shopId)
   // const cartList = store.state.cartList
-
-  // //计算购物车中的产品金额
-  // const price = computed(() => {
-  //   const productList = cartList[shopId]
-  //   let allChecked = true
-  //   if (productList) {
-  //     for (const i in productList) {
-  //       // console.log(i)
-  //       const product = productList[i]
-  //       if(product.check){
-  //         allChecked += (product.count * product.price)
-  //       }
-  //       if(product.count > 0 && !product.check){
-  //         allChecked = false
-  //       }
-  //     }
-  //   }
-  //   return count.toFixed(2)
-  // })
-  //
-  // //商品全选
-  // const allChecked = computed(()=>{
-  //   const productList = cartList[shopId]
-  //   let result = true
-  //   if (productList) {
-  //     for (let i in productList) {
-  //       // console.log(i)
-  //       const product = productList[i]
-  //       if(product.count > 0 && !product.check){
-  //           result = false
-  //       }
-  //     }
-  //   }
-  //   return result
-  // })
-
-
   //修改商品选中状态
-  const handleCartItemChecked =(shopId,productId)=>{
-      store.commit('changeCartChecked',{ shopId,productId })
+  const handleCartItemChecked = (shopId, productId) => {
+    store.commit('changeCartChecked', {shopId, productId})
   }
-  const setCartItemChecked = (shopId) =>{
-      store.commit('setCartItemChecked',{ shopId })
+  const setCartItemChecked = (shopId) => {
+    store.commit('setCartItemChecked', {shopId})
   }
   //清空购物车
-  const clearCartProducts =(shopId)=>{
-     store.commit('clearCartProducts',{ shopId })
+  const clearCartProducts = (shopId) => {
+    store.commit('clearCartProducts', {shopId})
   }
 
   //商品数量显示
-  const getProductCartInfo = (shopId,productId) =>{
+  const getProductCartInfo = (shopId, productId) => {
     return cartList?.[shopId]?.productList?.[productId].count || 0
   }
 
-  return { CartProductList ,cartList,calculations,changItemCart ,getProductCartInfo,
-    handleCartItemChecked ,clearCartProducts,setCartItemChecked }
+  return {
+    CartProductList, cartList, calculations, changItemCart, getProductCartInfo,
+    handleCartItemChecked, clearCartProducts, setCartItemChecked
+  }
 }
 
 //展示隐藏购物车逻辑
-const toggleCartShow = () =>{
+const toggleCartShow = () => {
   const showCart = ref(false)
-  const handleShowCartChange = () =>{
+  const handleShowCartChange = () => {
     showCart.value = !showCart.value
   }
   return {showCart, handleShowCartChange}
@@ -137,14 +107,23 @@ const toggleCartShow = () =>{
 
 export default {
   name: 'Cart',
-  setup () {
+  setup() {
     const route = useRoute()
     const shopId = route.params.id
-    const { CartProductList ,cartList,calculations,getProductCartInfo,
-      changItemCart ,handleCartItemChecked ,clearCartProducts ,setCartItemChecked } = useCartEffect(shopId)
+    const {
+      CartProductList, cartList, calculations, getProductCartInfo,
+      changItemCart, handleCartItemChecked, clearCartProducts, setCartItemChecked
+    } = useCartEffect(shopId)
     const {showCart, handleShowCartChange} = toggleCartShow()
-    return { shopId, CartProductList,cartList,calculations,showCart,setCartItemChecked,getProductCartInfo,
-      changItemCart ,handleCartItemChecked ,clearCartProducts ,handleShowCartChange }
+
+    // const { showToast } = ToatsFunction()
+    // const handleClick = () =>{
+    //   showToast('测试一下')
+    // }
+    return {
+      shopId, CartProductList, cartList, calculations, showCart, setCartItemChecked, getProductCartInfo,
+      changItemCart, handleCartItemChecked, clearCartProducts, handleShowCartChange
+    }
   }
 }
 </script>
@@ -153,15 +132,16 @@ export default {
 @import "../../style/viriables.scss";
 @import '../../style/mixin.scss';
 
-.mask{
-  position:fixed;
+.mask {
+  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   top: 0;
-  background:rgba( 0, 0, 0, .5);
+  background: rgba(0, 0, 0, .5);
   z-index: 1;
 }
+
 .cart {
   position: absolute;
   left: 0;
@@ -176,43 +156,51 @@ export default {
   flex: 1;
   overflow-y: scroll;
   background: $bgColor;
-  &__header{
-    display:flex;
-    line-height:.52rem;
+
+  &__header {
+    display: flex;
+    line-height: .52rem;
     border-bottom: 1px solid $content-bgColor;
-    font-size:.14rem;
-    color:$content-fontcolor;
-    &__all{
-      width:.64rem;
-      margin-left:.17rem;
+    font-size: .14rem;
+    color: $content-fontcolor;
+
+    &__all {
+      width: .64rem;
+      margin-left: .17rem;
     }
-    &__icon{
+
+    &__icon {
       display: inline-block;
-      color:$btnColor;
+      color: $btnColor;
       vertical-align: top;
-      font-size:.19rem;
+      font-size: .19rem;
     }
-    &__clear{
-      flex:1;
-      margin-right:.16rem;
+
+    &__clear {
+      flex: 1;
+      margin-right: .16rem;
       text-align: right;
     }
-    &__btn{
-      display:inline-block;
+
+    &__btn {
+      display: inline-block;
     }
   }
+
   &__item {
     position: relative;
     display: flex;
     padding: .12rem 0;
     margin: 0 .16rem;
     border-bottom: solid .01rem $content-bgColor;
-    &__checked{
-      color:$btnColor;
-      font-size:.2rem;
+
+    &__checked {
+      color: $btnColor;
+      font-size: .2rem;
       line-height: .5rem;
-      margin-right:.2rem;
+      margin-right: .2rem;
     }
+
     &__detail {
       overflow: hidden;
     }
@@ -286,6 +274,7 @@ export default {
   height: .49rem;
   border-top: .01rem solid $content-bgColor;
   background-color: $bgColor;
+
   &__icon {
     position: relative;
     width: .84rem;
@@ -331,8 +320,9 @@ export default {
     color: $bgColor;
     text-align: center;
     background: #4fb0f9;
-    a{
-      color:$bgColor;
+
+    a {
+      color: $bgColor;
       text-decoration: none;
     }
   }

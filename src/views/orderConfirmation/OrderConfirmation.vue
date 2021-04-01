@@ -26,5 +26,6 @@ export default {
   right: 0;
   bottom: 0;
   background-color: $content-bgColor;
+  overflow-y: scroll;
 }
 </style>

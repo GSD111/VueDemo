@@ -15,10 +15,9 @@
 
 <script>
 import ShopInfo from '@/components/ShopInfo'
-import { useRouter } from 'vue-router'
 import Content from '@/views/shop/Content'
 import Cart from '@/views/shop/Cart'
-
+import { useCommonCartEffect } from './CommonCartEffect'
 export default {
   name: 'Shop',
   components: {
@@ -27,12 +26,7 @@ export default {
     Cart
   },
   setup () {
-    const router = useRouter()
-    // const route = useRoute()
-    // console.log(route.name, route.params)
-    const handleBackClick = () => {
-      router.back()
-    }
+    const { handleBackClick } = useCommonCartEffect()
     const item =
       {
         id: 1,

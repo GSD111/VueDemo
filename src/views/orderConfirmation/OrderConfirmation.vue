@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="top">
       <div class="top__header">
-        <div class="top__header__back iconfont">&#xe7ea;</div>
+        <div class="top__header__back iconfont" @click="handleBackClick">&#xe7ea;</div>
         确认订单
       </div>
       <div class="top__receiver">
@@ -36,16 +36,15 @@
 
 <script>
 import { useCommonCartEffect } from '../shop/CommonCartEffect'
-import { useRoute } from 'vue-router'
+import { useRoute  } from 'vue-router'
 
 export default {
   name: 'OrderConfirmation',
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { CartProductList } = useCommonCartEffect(shopId)
-
-    return { CartProductList }
+    const { CartProductList ,handleBackClick } = useCommonCartEffect(shopId)
+    return { CartProductList ,handleBackClick }
   }
 }
 </script>

@@ -23,8 +23,38 @@ export const useCommonCartEffect = (shopId) => {
   //获取购物车中的产品
   const CartProductList = computed(() => {
     const CartProductList = cartList[shopId]?.productList || []
-
     return CartProductList
   })
-  return {cartList, CartProductList,changItemCart,handleBackClick}
+
+  //计算购物车中的商品数量及金额总价
+  const calculations = computed(() => {
+    const productList = cartList[shopId]?.productList
+    const result = {total:0,price:0 , allChecked:true}
+    if (productList) {
+      for (const i in productList) {
+        // console.log(i)
+        const product = productList[i]
+        result.total += product.count        //计算商品数量
+        if(product.check){
+          result.price += (product.count * product.price)   //计算商品价格
+        }
+        if(product.count > 0 && !product.check){
+          result.allChecked = false            //商品选中状态
+        }
+        // console.log(productList[i])
+        // count += productList[i].count
+      }
+    }
+    result.price = result.price.toFixed(2)
+    return result
+  })
+
+  //商家的名称
+  const shopName = computed(() => {
+    const shopName = cartList[shopId]?.shopName || ''
+     // console.log(cartList[shopId]?.shopName)
+    return shopName
+
+  })
+  return {cartList, CartProductList,shopName,calculations,changItemCart,handleBackClick}
 }

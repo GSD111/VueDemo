@@ -65,30 +65,8 @@ import { useCommonCartEffect } from './CommonCartEffect'
 //购物车商品信息、数量、价格获取计算
 const useCartEffect = (shopId) => {
   const store = useStore()
-  const { cartList,CartProductList,changItemCart } = useCommonCartEffect(shopId)
+  const { cartList,CartProductList,calculations,changItemCart } = useCommonCartEffect(shopId)
   // const cartList = store.state.cartList
-  //计算购物车中的商品数量
-  const calculations = computed(() => {
-    const productList = cartList[shopId]?.productList
-    const result = {total:0,price:0 , allChecked:true}
-    if (productList) {
-      for (const i in productList) {
-        // console.log(i)
-        const product = productList[i]
-        result.total += product.count        //计算商品数量
-        if(product.check){
-          result.price += (product.count * product.price)   //计算商品价格
-        }
-        if(product.count > 0 && !product.check){
-          result.allChecked = false            //商品选中状态
-        }
-        // console.log(productList[i])
-        // count += productList[i].count
-      }
-    }
-    result.price = result.price.toFixed(2)
-    return result
-  })
 
   // //计算购物车中的产品金额
   // const price = computed(() => {

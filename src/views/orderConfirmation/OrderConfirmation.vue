@@ -16,6 +16,7 @@
       </div>
     </div>
     <div class="products">
+      <div class="products__title">{{ shopName }}</div>
       <div class="products__list">
         <div class="products__item"
              v-for="item in CartProductList"
@@ -24,27 +25,37 @@
           <div class="products__item__detail">
             <h4 class="products__item__title">{{ item.name }}</h4>
             <p class="products__item__price">
-              <span class="products__item__yen">&yen; {{ item.price }} * {{ item.count }}</span>
-              <span class="products__item__yen">&yen; {{ item.price * item.count }}</span>
+              <span>
+                  <span class="products__item__yen">&yen;</span>
+                  {{ item.price }} x {{ item.count }}
+              </span>
+              <span class="products__item__total">
+                 <span class="products__item__yen">&yen;</span>
+                 {{ item.price * item.count }}
+              </span>
             </p>
           </div>
         </div>
       </div>
     </div>
+    <div class="order">
+      <div class="order__price">实付金额 &yen; <b>{{ calculations.price }}</b></div>
+      <div class="order__btn">提交订单</div>
+    </div>
   </div>
 </template>
 
 <script>
-import { useCommonCartEffect } from '../shop/CommonCartEffect'
-import { useRoute  } from 'vue-router'
+import {useCommonCartEffect} from '../shop/CommonCartEffect'
+import {useRoute} from 'vue-router'
 
 export default {
   name: 'OrderConfirmation',
-  setup () {
+  setup() {
     const route = useRoute()
     const shopId = route.params.id
-    const { CartProductList ,handleBackClick } = useCommonCartEffect(shopId)
-    return { CartProductList ,handleBackClick }
+    const {CartProductList,shopName,calculations, handleBackClick} = useCommonCartEffect(shopId)
+    return {CartProductList,shopName, calculations,handleBackClick}
   }
 }
 </script>
@@ -128,23 +139,29 @@ export default {
   }
 }
 
-.products{
-    margin:.16rem .18rem .55rem .18rem;
-    background: $bgColor;
-  &__list{
+.products {
+  margin: .16rem .18rem 2.07rem .18rem;
+  background: $bgColor;
 
+  &__title {
+    padding:.16rem .16rem 0 .16rem;
+    font-size:.16rem;
+    color:$content-fontcolor;
   }
+
   &__item {
     position: relative;
     display: flex;
     padding: .16rem;
+
     &__img {
       width: .46rem;
       height: .46rem;
       margin-right: .16rem;
     }
+
     &__detail {
-      flex:1;
+      flex: 1;
       overflow: hidden;
     }
 
@@ -156,23 +173,39 @@ export default {
     }
 
     &__price {
+      display: flex;
       margin: .06rem 0 0 0;
       line-height: .2rem;
+      font-size: .14rem;
       color: #e93b3b;
     }
-
     &__yen {
       font-size: .14rem;
     }
-
-    &__origin {
-      margin-left: .06rem;
-      line-height: .2rem;
-      font-size: .12rem;
-      color: #999;
-      text-decoration: line-through;
+    &__total {
+      flex: 1;
+      text-align: right;
+      color: #000;
     }
-
+  }
+}
+.order{
+  display:flex;
+  height:.49rem;
+  line-height:.49rem;
+  background:$bgColor;
+  &__price{
+    flex:1;
+    text-indent: .24rem;
+    font-size:.14rem;
+    color:$content-btn;
+  }
+  &__btn{
+    width:.98rem;
+    text-align:center;
+    color:$bgColor;
+    background-color:#4FB0F9;
+    font-size:.14rem;
   }
 }
 

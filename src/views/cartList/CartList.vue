@@ -11,7 +11,7 @@
       </div>
     </router-link>
   </div>
-  <Footer />
+  <Footer :currentIndex="1"/>
 </template>
 
 <script>

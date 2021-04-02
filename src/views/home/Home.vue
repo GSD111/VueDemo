@@ -3,7 +3,7 @@
     <Header/>
     <Nearby/>
   </div>
-  <Footer/>
+  <Footer :currentIndex="0"/>
 </template>
 <script>
 import Header from '@/views/home/Header'

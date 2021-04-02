@@ -3,7 +3,7 @@
     <span
       v-for="(item,index) in footerList"
       :key="index"
-      :class="{'footer__item':true ,'footer__item--active': index==0 }">
+      :class="{'footer__item':true ,'footer__item--active': index==currentIndex }">
       <router-link :to="item.to">
         <div class="iconfont" v-html="item.icon"/>
         <div class="footer__title">{{ item.text }}</div>
@@ -15,6 +15,7 @@
 <script>
 export default {
   name: 'Footer',
+  props:['currentIndex'],
   setup() {
     const footerList = [
       {
@@ -30,7 +31,7 @@ export default {
       {
         icon: '&#xe601;',
         text: '订单',
-        to: {name: 'Home'}
+        to: {name: 'OrderList'}
       },
       {
         icon: '&#xe621;',

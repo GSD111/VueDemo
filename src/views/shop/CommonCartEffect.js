@@ -22,8 +22,16 @@ export const useCommonCartEffect = (shopId) => {
   }
   //获取购物车中的产品
   const CartProductList = computed(() => {
-    const CartProductList = cartList[shopId]?.productList || []
-    return CartProductList
+    const CartProductList = cartList[shopId]?.productList || {}
+    const NotEmptyProductList = {}
+    for(let i in CartProductList){
+      const product= CartProductList[i]
+      if(product.count > 0){
+        NotEmptyProductList[i] = product
+      }
+      // console.log(NotEmptyProductList[i])
+    }
+    return NotEmptyProductList
   })
 
   //计算购物车中的商品数量及金额总价

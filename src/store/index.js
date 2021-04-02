@@ -10,11 +10,16 @@ const setLocalCartList = (state) =>{
 
 //获取缓存中的数据
 export const getLocalCartList = () =>{
-  if(localStorage.cartList){
+  try{
     return JSON.parse(localStorage.cartList)
-  }else{
+  }catch (e) {
     return { }
   }
+  // if(localStorage.cartList){
+  //   return JSON.parse(localStorage.cartList)
+  // }else{
+  //   return { }
+  // }
 
 }
 export default createStore({
@@ -105,13 +110,18 @@ export default createStore({
       }
       setLocalCartList(state)
     },
-
     //清空购物车
-    clearCartProducts (state, payload) {
-      const { shopId } = payload
+    clearCartProducts (state, shopId) {
+      // const { shopId } = payload
       state.cartList[shopId].productList = {}
       setLocalCartList(state)
-    }
+    },
+
+    // //提交订单清空对应商家购物车
+    // clearCartdata(state,shopId){
+    //   state.cartList[shopId].productList = {}
+    //   setLocalCartList(state)
+    // }
   },
   actions: {},
   modules: {}

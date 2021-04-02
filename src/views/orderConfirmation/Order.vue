@@ -10,7 +10,7 @@
       <div class="mask__content__btns">
         <div
           class="mask__content__btn mask__content__btn--first"
-          @click="handleCancleOrder"
+          @click="handleCancelOrder"
         >取消订单</div>
         <div
           class="mask__content__btn mask__content__btn--second"
@@ -26,26 +26,39 @@ import {useCommonCartEffect} from '../shop/CommonCartEffect'
 import {useRoute ,useRouter } from "vue-router";
 import { useStore } from "vuex"
 import { ref } from 'vue'
+
+//提交订单相关逻辑
+const useMakeOrderEffect = (shopId) =>{
+  const router = useRouter()
+  const store = useStore()
+  const handleCancelOrder = () =>{
+    router.push({name:'Home'})
+  }
+  const handleConfirmOrder = () =>{
+    store.commit('clearCartProducts',shopId)
+    router.push({name:'OrderList'})
+  }
+  return { handleCancelOrder,handleConfirmOrder}
+}
+
+//订单提交蒙层相关逻辑
+const useMaskOrderEffect = () =>{
+  const showConfirm = ref(false)
+  const handleSubmitClick = (status) =>{
+    showConfirm.value = status
+  }
+  return { showConfirm ,handleSubmitClick }
+}
+
 export default {
 name: "Order",
   setup() {
     const route = useRoute()
-    const router = useRouter()
-    const store = useStore()
-    const showConfirm = ref(false)
     const shopId = route.params.id
     const { calculations } = useCommonCartEffect(shopId)
-    const handleCancleOrder = () =>{
-      router.push('/')
-    }
-    const handleConfirmOrder = () =>{
-      store.commit('clearCartProducts',shopId)
-      router.push('/')
-    }
-    const handleSubmitClick = (status) =>{
-      showConfirm.value = status
-    }
-    return { calculations ,showConfirm,handleCancleOrder,handleConfirmOrder,handleSubmitClick}
+    const { handleCancelOrder,handleConfirmOrder } = useMakeOrderEffect(shopId)
+    const { showConfirm,handleSubmitClick } = useMaskOrderEffect()
+    return { calculations ,showConfirm,handleCancelOrder,handleConfirmOrder,handleSubmitClick}
   }
 }
 </script>

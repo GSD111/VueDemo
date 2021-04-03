@@ -16,6 +16,25 @@
           </div>
           <div class="order__content__info">
             <div class="order__content__price">&yen;33.6</div>
+            <div class="order__content__count">共4件</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="orders">
+      <div class="order">
+        <div class="order__title">
+          永辉超市
+          <span class="order__status">已完成</span>
+        </div>
+        <div class="order__content">
+          <div class="order__content__imgs">
+            <img class="order__content__img" src="http://www.dell-lee.com/imgs/vue3/tomato.png"/>
+            <img class="order__content__img" src="http://www.dell-lee.com/imgs/vue3/tomato.png"/>
+            <img class="order__content__img" src="http://www.dell-lee.com/imgs/vue3/tomato.png"/>
+          </div>
+          <div class="order__content__info">
+            <div class="order__content__price">&yen;33.6</div>
             <div class="order__content__count">共3件</div>
           </div>
         </div>
@@ -56,11 +75,36 @@ const useOrderListEffect = () => {
           }
         ]
 
+      },
+      {
+        shopId: 2,
+        shopName: '永辉超市',
+        products: [
+          {
+            id: 1,
+            name: '圣女果',
+            imgUrl: 'http://www.dell-lee.com/imgs/vue3/tomato.png',
+            price: '33.6',
+          },
+          {
+            id: 2,
+            name: '波罗蜜',
+            imgUrl: 'http://www.dell-lee.com/imgs/vue3/tomato.png',
+            price: '33.6',
+          },
+          {
+            id: 3,
+            name: '椰子',
+            imgUrl: 'http://www.dell-lee.com/imgs/vue3/tomato.png',
+            price: '33.6',
+          }
+        ]
+
       }
     ]
   })
-  const list = toRefs(data)
-  console.log(list)
+  const lists = toRefs(data)
+  // console.log(lists.list.value[1].shopName)
   return data
 }
 

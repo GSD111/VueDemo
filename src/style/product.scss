@@ -58,25 +58,25 @@
     right: 0;
     bottom: .12rem;
 
-    &__minus, &__plus {
-      display: inline-block;
-      width: .2rem;
-      height: .2rem;
-      line-height: .16rem;
-      border-radius: 50%;
-      font-size: .2rem;
-      text-align: center;
-    }
+    //&__minus, &__plus {
+    //  display: inline-block;
+    //  width: .2rem;
+    //  height: .2rem;
+    //  line-height: .16rem;
+    //  border-radius: 50%;
+    //  font-size: .2rem;
+    //  text-align: center;
+    //}
 
     &__minus {
-      border: solid .01px $content-btn;
+      //border: solid .01px $content-btn;
       color: $content-btn;
       margin-right: .05rem;
     }
 
     &__plus {
-      background: $btnColor;
-      color: $bgColor;
+      //background: $btnColor;
+      color: $btnColor;
       margin-left: .05rem;
     }
   }

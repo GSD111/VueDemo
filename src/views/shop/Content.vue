@@ -20,13 +20,13 @@
           </p>
         </div>
         <div class="product__number">
-          <span class="product__number__minus"
+          <span class="product__number__minus iconfont"
                 @click="()=>{ changeItem(shopId,item.id,item,-1,shopName) }"
-          >-</span>
+          >&#xe691;</span>
           {{ cartList?.[shopId]?.productList?.[item.id]?.count || 0 }}
-          <span class="product__number__plus"
+          <span class="product__number__plus iconfont"
                 @click="()=>{ changeItem(shopId,item.id,item,1,shopName) }"
-          >+</span>
+          >&#xe606;</span>
         </div>
       </div>
     </div>

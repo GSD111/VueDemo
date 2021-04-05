@@ -18,6 +18,8 @@ import { reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import Toast, { ToatsFunction } from '@/components/Toast'
+axios.defaults.baseURL = 'http://www.vue3.com/api'
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const useLoginEffect = (showToast) => {
   const router = useRouter()
@@ -35,17 +37,19 @@ const useLoginEffect = (showToast) => {
       return false
     }
     try {
-      axios.post('https://www.fastmock.site/mock/900f33785105ab98e7a223a9a98703dd/vue3/api/user/login', {
+      axios.post('/test', {
         username: data.username,
         password: data.password,
-        changeOrigin: true
+        changeOrigin: true,
+        // headers: {'content-type': 'application/x-www-form-urlencoded'},	//需要修改注意的地方
+        // responseType: responseType,
       }).then(function (response) {
-        showToast('登录成功！')
+        showToast(response.data.msg)
         localStorage.isLogin = true
         router.push({ name: 'Home' })
-        // console.log('成功了')
+        console.log(response.data)
       }).catch(function (response) {
-        showToast('登录失败了！')
+        showToast(response.data.msg)
         // alert('失败了')
         // console.log('失败了')
       })

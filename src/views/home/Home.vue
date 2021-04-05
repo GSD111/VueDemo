@@ -22,7 +22,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  overflow-y: auto;
+  //overflow-y: auto;
+  overflow-y: scroll;
   position: absolute;
   left: 0;
   top: 0;

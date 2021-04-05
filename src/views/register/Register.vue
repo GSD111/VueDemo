@@ -22,6 +22,9 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import Toast, { ToatsFunction } from '@/components/Toast'
 
+axios.defaults.baseURL = 'http://www.vue3.com/api'
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 const useRegisterEffect = (showToast) => {
   const router = useRouter()
   const data = reactive({
@@ -42,18 +45,17 @@ const useRegisterEffect = (showToast) => {
       return false
     }
     try {
-      axios.post('https://www.fastmock.site/mock/900f33785105ab98e7a223a9a98703dd/vue3/api/user/login', {
+      axios.post('/register', {
         username: data.username,
         password: data.password,
         repassword: data.repassword,
         changeOrigin: true
       }).then((response) => {
-        showToast('注册成功！')
-        console.log(response)
+        showToast(response.data.msg)
         router.push({ name: 'Login' })
         // console.log('成功了')
       }).catch(function (response) {
-        showToast('注册失败了！')
+        showToast(response.data.msg)
         // alert('失败了')
         // console.log('失败了')
       })

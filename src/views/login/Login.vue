@@ -45,8 +45,11 @@ const useLoginEffect = (showToast) => {
         // responseType: responseType,
       }).then(function (response) {
         showToast(response.data.msg)
-        localStorage.isLogin = true
-        router.push({ name: 'Home' })
+        if(response.data.code == 200){
+          localStorage.isLogin = response.data.username
+          router.push({ name: 'Home' })
+        }
+        // console.log(localStorage.isLogin)
         console.log(response.data)
       }).catch(function (response) {
         showToast(response.data.msg)

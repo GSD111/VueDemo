@@ -1,19 +1,21 @@
 module.exports = {
-  publicPath: '/',
+  publicPath: '/vue3',
   lintOnSave: false, // eslint-loader 是否在保存的时候检查
-  devServer: {
-    proxy: {
+  // Paths
+  dev: {
+    assetsSubDirectory: 'static',
+    assetsPublicPath: '/',
+    proxyTable: {
       '/api': {
-        // 此处的写法，目的是为了 将 /api 替换成 https://www.baidu.com/
-        target: 'http://www.vue3.com/',
-        // 允许跨域
-        changeOrigin: true,
-        ws: true,
+        target: 'http://www.vue3.com/api', //后端接口地址
+        changeOrigin: true,  //是否允许跨越
         pathRewrite: {
-          '^/api': ''
+          '^/api': '/api',        //重写,
         }
       }
-    }
+    },
+    host: 'localhost',   //本地ip
+    port: 8080,
   }
 }
 

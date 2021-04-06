@@ -17,7 +17,14 @@ export default {
     Nearby,
     Header,
     Footer
+  },
+  setup() {
+    const username = localStorage.isLogin  //获取登录的用户名
+
+    return {username}
   }
+
+
 }
 </script>
 <style lang="scss" scoped>
